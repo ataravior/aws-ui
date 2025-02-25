@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
                   instance_name: instanceName,
                   instance_type: instanceType,
                   ami: amiType,
-                  pubkey_path: keyPair
               })
           })
           .then(response => response.json())
