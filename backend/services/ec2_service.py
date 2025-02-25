@@ -6,6 +6,37 @@ os.environ["PULUMI_CONFIG_PASSPHRASE"] = ""
 
 # יצירת לקוח EC2 של AWS
 ec2 = boto3.client("ec2")
+ 
+
+
+import boto3
+from botocore.exceptions import BotoCoreError, ClientError
+
+class EC2Service:
+    @staticmethod
+    def create_instance(instance_name: str, instance_type: str, ami: str, pubkey_path: str):
+ 
+        try:
+            ec2 = boto3.client('ec2')
+
+            response = ec2.run_instances(
+                ImageId=ami,
+                InstanceType=instance_type,
+                MinCount=1,
+                MaxCount=1,
+                TagSpecifications=[
+                    {
+                        'ResourceType': 'instance',
+                        'Tags': [{'Key': 'Name', 'Value': instance_name}]
+                    }
+                ]
+            )
+
+            instance_id = response['Instances'][0]['InstanceId']
+            return {"message": "Instance created successfully", "instance_id": instance_id}
+
+        except (BotoCoreError, ClientError) as e:
+            return {"error": str(e)}
 
 class EC2Service:
     @staticmethod
