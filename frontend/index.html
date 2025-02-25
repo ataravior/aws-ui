@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkyOps</title>
+  <link rel="stylesheet" href="/frontend/style.css">
+  <script src="/frontend/script.js"></script>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <svg class="cloud-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      <h1>SkyOps</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-section="ec2-section">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+          <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+        </svg>
+        EC2 Instances
+      </button>
+      <button class="nav-item" data-section="s3-section">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+        S3 Storage
+      </button>
+      <button class="nav-item" data-section="route53-section">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M2 12h20"></path>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        Route 53
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- EC2 Section -->
+    <section id="ec2-section" class="section active">
+      <div class="section-header">
+        <h2>EC2 Instance Management</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Instance List</h3>
+          <button class="btn btn-secondary" id="refresh-instances">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+            </svg>
+            Refresh
+          </button>
+        </div>
+        <div class="instance-list" id="ec2-list">
+          <div class="resource-item">
+            <div class="resource-info">
+              <span class="status-badge running">Running</span>
+              <h4>test</h4>
+              <p>i-1234567890abcdef0 • t3.nano</p>
+            </div>
+            <div class="resource-actions">
+              <button class="btn btn-icon" title="Stop Instance">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                  <line x1="12" y1="2" x2="12" y2="12"></line>
+                </svg>
+              </button>
+              <button class="btn btn-icon btn-danger" title="Terminate Instance">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-6">
+        <div class="card-header">
+          <h3>Create New Instance</h3>
+        </div>
+        <form class="resource-form">
+          <div class="form-group">
+            <label for="instance-name">Instance Name</label>
+            <input type="text" id="instance-name" placeholder="my-Instance Name">
+          </div>
+          <div class="form-group">
+            <label for="instance-type">Instance Type</label>
+            <select id="instance-type">
+              <option value="t3.nano">t3.nano</option>
+              <option value="t3.micro">t4g.nano</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ami-type">AMI Type</label>
+            <select id="ami-type">
+              <option value="ubuntu">Ubuntu </option>
+              <option value="amazon">Amazon Linux </option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Instance</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- S3 Section -->
+    <section id="s3-section" class="section">
+      <div class="section-header">
+        <h2>S3 Storage Management</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Bucket List</h3>
+          <button class="btn btn-secondary" id="refresh-buckets">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+            </svg>
+            Refresh
+          </button>
+        </div>
+        <div class="resource-list" id="s3-list"></div>
+      </div>
+
+      <div class="card mt-6">
+        <div class="card-header">
+          <h3>Create New Bucket</h3>
+        </div>
+        <form class="resource-form">
+          <div class="form-group">
+            <label for="bucket-name">Bucket Name</label>
+            <input type="text" id="bucket-name" placeholder="my-bucket name" required>
+            <small class="help-text">
+              <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html" target="_blank" rel="noopener">
+                Bucket naming rules
+              </a>
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="bucket-region">Region</label>
+            <select id="bucket-region">
+              <option value="us-east-1">US East - 1 (N. Virginia)</option>
+              <option value="us-west-2">US West (Oregon)</option>
+              <option value="eu-west-1">EU (Ireland)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="bucket-access">Access Type</label>
+            <select id="bucket-access">
+              <option value="private">Private</option>
+              <option value="public">Public</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Bucket</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card mt-6">
+        <div class="card-header">
+          <h3>Delete Bucket</h3>
+        </div>
+        <form class="resource-form">
+          <div class="form-group">
+            <label for="delete-bucket">Bucket Name</label>
+            <input type="text" id="delete-bucket" placeholder="Enter bucket name" required>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-danger">Delete Bucket</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Route53 Section -->
+    <section id="route53-section" class="section">
+      <div class="section-header">
+        <h2>Route53 DNS Management</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Hosted Zones</h3>
+          <button class="btn btn-secondary" id="refresh-zones">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+            </svg>
+            Refresh
+          </button>
+        </div>
+        <div class="resource-list" id="zones-list"></div>
+      </div>
+
+      <div class="card mt-6">
+        <div class="card-header">
+          <h3>Create DNS Zone</h3>
+        </div>
+        <form class="resource-form">
+          <div class="form-group">
+            <label for="zone-name">Zone Name</label>
+            <input type="text" id="zone-name" placeholder="example.com" required>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Zone</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card mt-6">
+        <div class="card-header">
+          <h3>Manage DNS Records</h3>
+        </div>
+        <form class="resource-form">
+          <div class="form-group">
+            <label for="zone-id">Zone ID</label>
+            <input type="text" id="zone-id" placeholder="Enter zone ID" required>
+          </div>
+          <div class="form-group">
+            <label for="record-name">Record Name</label>
+            <input type="text" id="record-name" placeholder="example.www" required>
+          </div>
+          <div class="form-group">
+            <label for="record-type">Record Type</label>
+            <select id="record-type">
+              <option value="A">A</option>
+              <option value="CNAME">CNAME</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="record-value">Record Value</label>
+            <input type="text" id="record-value" placeholder="Enter record value" required>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Record</button>
+            <button type="button" class="btn btn-warning">Update Record</button>
+            <button type="button" class="btn btn-danger">Delete Record</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card mt-6">
+        <div class="card-header">
+          <h3>Delete Zone</h3>
+        </div>
+        <form class="resource-form">
+          <div class="form-group">
+            <label for="delete-zone-id">Zone ID</label>
+            <input type="text" id="delete-zone-id" placeholder="Enter zone ID" required>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-danger">Delete Zone</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <script src="/frontend/script.js"></script>
+</body>
+</html>
